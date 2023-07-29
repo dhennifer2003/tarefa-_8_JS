@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizzaria</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Pizzaria Avenida - Controle de Pedidos</h1>
+        <p>Item do pedido:</p>
+        <input type="radio" name="tipoPedido" value="pizzas" id="radioPizzas" checked>
+        <label for="radioPizzas">Pizzas</label>
+        <input type="radio" name="tipoPedido" value="bebidas" id="radioBebidas">
+        <label for="radioBebidas">Bebidas</label>
+
+        <label for="inputItem">Item:</label>
+        <input type="text" id="inputItem">
+
+        <label for="inputDetalhe">Detalhe do Pedido:</label>
+        <input type="text" id="inputDetalhe">
+
+        <label for="selectTamanho" id="labelTamanho">Tamanho da Pizza:</label>
+        <select id="selectTamanho">
+            <option value="pequena">Pequena</option>
+            <option value="media">Média</option>
+            <option value="grande">Grande</option>
+        </select>
+
+        <button id="btnAdicionar">Adicionar</button>
+
+        <h2>Pedido:</h2>
+        <ul id="pedidoLista"></ul>
+    </div>
+
+    <script>
+        const radioPizzas = document.getElementById('radioPizzas');
+        const radioBebidas = document.getElementById('radioBebidas');
+        const inputItem = document.getElementById('inputItem');
+        const inputDetalhe = document.getElementById('inputDetalhe');
+        const labelTamanho = document.getElementById('labelTamanho');
+        const selectTamanho = document.getElementById('selectTamanho');
+        const btnAdicionar = document.getElementById('btnAdicionar');
+        const pedidoLista = document.getElementById('pedidoLista');
+
+        let tipoPedido = "pizzas";
+
+        function updateTamanhoVisibility() {
+            if (tipoPedido === 'pizzas') {
+                labelTamanho.style.display = 'block';
+                selectTamanho.style.display = 'block';
+            } else {
+                labelTamanho.style.display = 'none';
+                selectTamanho.style.display = 'none';
+            }
+        }
+
+        radioPizzas.addEventListener('click', () => {
+            tipoPedido = "pizzas";
+            updateTamanhoVisibility();
+        });
+
+        radioBebidas.addEventListener('click', () => {
+            tipoPedido = "bebidas";
+            updateTamanhoVisibility();
+        });
+
+        btnAdicionar.addEventListener('click', () => {
+            const item = inputItem.value;
+            const detalhe = inputDetalhe.value;
+            const tamanho = selectTamanho.value;
+
+            if (!item || !detalhe) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            const listItem = document.createElement('li');
+            const tipoPedidoLabel = tipoPedido === 'pizzas' ? 'Pizza' : 'Bebida';
+            const tamanhoLabel = tipoPedido === 'pizzas' ? `, Tamanho: ${tamanho}` : '';
+            listItem.textContent = `${tipoPedidoLabel} - ${item}, Detalhe: ${detalhe}${tamanhoLabel}`;
+            pedidoLista.appendChild(listItem);
+            inputItem.value = '';
+            inputDetalhe.value = '';
+        });
+    </script>
+</body>
+</html>
