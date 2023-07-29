@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Locadora</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+hr {
+    margin: 20px 0;
+    border: none;
+    border-bottom: 1px solid #f3eeee;
+}
+
+.filme, .genero {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.filme label, .genero label {
+    font-weight: bold;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="button"] {
+    width: 20%;
+    padding: 10px;
+    background-color: #5f94e4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.tabelaFilme {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Meus Filmes Favoritos</h1>
+        <hr>
+        <div class="filme">
+            <label for="inputFilme" class="labelFilme">Título do Filme</label>
+            <input type="text" id="inputFilme">
+        </div>
+        <div class="genero">
+            <label for="inputGenero" class="labelGenero">Gênero</label>
+            <input type="text" id="inputGenero">
+        </div>
+        <input type="button" value="Adicionar" id="btnAdicionar">
+        <div class="tabelaFilme">
+            <table id="tabela">
+                <thead>
+                    <tr>
+                        <th>Título do Filme</th>
+                        <th>Gênero</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const inputFilme = document.getElementById('inputFilme');
+        const inputGenero = document.getElementById('inputGenero');
+        const btnAdicionar = document.getElementById('btnAdicionar');
+        const corpoTabela = document.getElementById('corpoTabela');
+
+        btnAdicionar.addEventListener('click', adicionarFilme);
+
+        function adicionarFilme() {
+            const filme = inputFilme.value;
+            const genero = inputGenero.value;
+
+            if (filme.trim() === '' || genero.trim() === '') {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            const row = document.createElement('tr');
+            const tituloCell = document.createElement('td');
+            const generoCell = document.createElement('td');
+
+            tituloCell.textContent = filme;
+            generoCell.textContent = genero;
+
+            row.appendChild(tituloCell);
+            row.appendChild(generoCell);
+            corpoTabela.appendChild(row);
+        }
+    </script>
+</body>
+</html>
