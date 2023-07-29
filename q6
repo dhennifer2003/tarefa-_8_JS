@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programa Email Institucional</title>
+</head>
+<body>
+    <h1>Programa Email Institucional</h1>
+    <form>
+        <p>Funcionário
+            <input type="text" id="inEmail" required>
+        </p>
+        <input type="submit" value="Gerar Email">
+    </form>
+    <h3></h3>
+    <script>
+        const frm = document.querySelector("form");
+        const resp = document.querySelector("h3");
+
+    frm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+        const nome = frm.inEmail.value.trim();
+
+        if (nome.length === 0) {
+            resp.innerText = "Por favor, digite o nome do funcionário.";
+        } else {
+            const email = criarEmailInstitucional(nome);
+            resp.innerText = `E-mail Institucional: ${email}`;
+        }
+    });
+
+    function criarEmailInstitucional(nomeCompleto) {
+    const email = nomeCompleto.toLowerCase().replace(/\s/g, "") + "@empresa.com.br";
+    return email;
+    }
+    </script>
+    
+</body>
+</html>
