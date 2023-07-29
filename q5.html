@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Revenda Herbie</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Revenda Herbie</h1>
+        <div>
+            <input type="text" id="inputModeloCarro" placeholder="Modelo do Carro">
+            <input type="text" id="inputPreco" placeholder="Preço R$">
+            <input type="button" id="btnAdicionar" value="Adicionar Carro">
+        </div>
+        <input type="button" id="btnListar" value="Listar todos">
+        <input type="button" id="btnFiltar" value="Filtrar por preços">
+        <input type="button" id="btnFiltar" value="Simular Desconto">
+        <div>
+            <pre id="outLista"></pre>
+        </div>
+    </div>
+
+    <script>
+        const inputModeloCarro = document.getElementById('inputModeloCarro');
+        const inputPreco = document.getElementById('inputPreco');
+        const btnAdicionar = document.getElementById('btnAdicionar');
+        const btnListar = document.getElementById('btnListar');
+        const btnFiltar = document.getElementById('btnFiltar');
+        const btnSimularDesconto = document.getElementById('btnSimularDesconto');
+        const outLista = document.getElementById('outLista');
+
+
+        let carros = [];
+
+        function adicionarCarro() {
+            const modeloCarro = inputModeloCarro.value;
+            const precoCarro = Number(inputPreco.value);
+
+            // verifica a validade dos dados
+            if (modeloCarro.trim() === '' || precoCarro === 0 || isNaN(precoCarro)) {
+                alert('Preencha corretamente os dados!');
+                inputModeloCarro.value = '';
+                inputPreco.value = '';
+                inputModeloCarro.focus();
+                return;
+            }
+
+            // adiciona no array o carro e o preço
+            carros.push({ modelo: modeloCarro, preco: precoCarro });
+
+            inputModeloCarro.value = '';
+            inputPreco.value = '';
+            inputModeloCarro.focus();
+
+            listarCarros();
+        }
+
+        btnAdicionar.addEventListener('click', adicionarCarro);
+
+        function listarCarros() {
+            if (carros.length === 0) {
+                outLista.textContent = 'Não há carros listados!';
+                return;
+            }
+
+            let lista = '';
+
+            for (let index = 0; index < carros.length; index++) {
+                // adiciona os carros à listagem
+                lista += `${carros[index].modelo} - R$: ${carros[index].preco.toFixed(2)}\n`;
+            }
+
+            outLista.textContent = lista;
+        }
+
+        btnListar.addEventListener('click', listarCarros);
+
+        function filtrarCarros() {
+            const valorMaximo = Number(prompt('Qual a faixa de preço do carro que procura?'));
+
+            if (valorMaximo === 0 || isNaN(valorMaximo)) {
+                return;
+            }
+
+            let lista = '';
+
+            for (let index = 0; index < carros.length; index++) {
+                // verifica se o preço do carro é menor ou igual ao informado pelo cliente
+                if (carros[index].preco <= valorMaximo) {
+                    lista += `${carros[index].modelo} - R$: ${carros[index].preco.toFixed(2)}\n`;
+                }
+            }
+
+            if (lista === '') {
+                outLista.textContent = `Não há carros na faixa de R$: ${valorMaximo.toFixed(2)}`;
+            } else {
+                outLista.textContent = `Carros com preço até R$: ${valorMaximo.toFixed(2)}\n------------------\n${lista}\n`;
+            }
+        }
+
+        btnFiltar.addEventListener('click', filtrarCarros);
+        btnSimularDesconto.addEventListener('click', () => {
+            const descontoPercentual = 40; 
+
+            const descontoDecimal = descontoPercentual / 100;
+            const carrosComDesconto = carros.map(carro => {
+                const precoComDesconto = carro.preco * (1 - descontoDecimal);
+                return { ...carro, preco: precoComDesconto };
+            });
+
+            let listaCarrosHTML = "";
+            carrosComDesconto.forEach(carro => {
+                listaCarrosHTML += `${carro.modelo} - R$ ${carro.preco.toFixed(2)}\n`;
+            });
+            outLista.textContent = listaCarrosHTML;
+        });
+    </script>
+</body>
+</html>
